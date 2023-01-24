@@ -1,20 +1,13 @@
 import sqlite3
 import datetime
 
-def store_image_path(image_path):
-    # Connect to the database
-    conn = sqlite3.connect('light_sources.db')
+def save_video(video_path):
+    conn = sqlite3.connect('camera.db')
     c = conn.cursor()
-
-    # Create a table for storing image paths if it doesn't exist
-    c.execute('''CREATE TABLE IF NOT EXISTS image_paths (id INTEGER PRIMARY KEY, path TEXT, timestamp TIMESTAMP)''')
-
-    # Get the current timestamp
+    c.execute('''CREATE TABLE IF NOT EXISTS videos (id INTEGER PRIMARY KEY, path TEXT, timestamp DATETIME)''')
     timestamp = datetime.datetime.now()
-
-    # Insert the image path and timestamp into the database
-    c.execute("INSERT INTO image_paths (path, timestamp) VALUES (?, ?)", (image_path, timestamp))
-
-    # Commit the changes and close the connection
+    c.execute("INSERT INTO videos (path, timestamp) VALUES (?,?)", (video_path, timestamp))
     conn.commit()
+    video_id = c.lastrowid
     conn.close()
+    return video_id

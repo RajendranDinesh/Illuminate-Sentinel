@@ -1,21 +1,17 @@
-from camera import capture_video
-from detection import detect_light_sources
-from alert import send_alert
-from database import store_image_path
-import datetime
-import cv2
+import camera
+import alert
+import database
 
-#camera_ips = ['rtsp://192.168.1.101:554/user=admin&password=&channel=1&stream=0.sdp',
-#              'rtsp://192.168.1.102:554/user=admin&password=&channel=1&stream=0.sdp',
-#              'rtsp://192.168.1.103:554/user=admin&password=&channel=1&stream=0.sdp']
+# List of camera IP addresses
+cameras = ["rtsp://username:password@192.168.0.1:554/stream", "rtsp://username:password@192.168.0.2:554/stream"]
 
-camera_ips = [0]
+cameras = [0]
 
-for i, ip in enumerate(camera_ips):
-    frame, light_sources = capture_video(ip, i)
-    if light_sources:
-        timestamp = datetime.datetime.now()
-        image_path = f"E:\ForestProject\data\images\camera_{i}_{timestamp}.jpg"
-        cv2.imwrite(image_path, frame)
-        #send_alert(i, image_path, timestamp)
-        #store_image_path(image_path)
+while True:
+    for i, ip in enumerate(cameras):
+        video_path = camera.capture_video(ip,i)
+        if video_path:
+            # Save video in the database
+            video_id = database.save_video(video_path)
+            # Send alert with video and video_id
+            #alert.send_alert(i, video_path, video_id)
