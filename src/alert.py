@@ -3,9 +3,9 @@ from twilio.rest import Client
 account_sid = 'AC45802ac684dd136942dca66acb1ac263'
 auth_token = 'a63bc145f21a3371e73937ee40896cc9'
 
-def send_alert(camera_number, image_path, video_id):
+def send_alert(camera_number, image_path, time):
     # Format the message
-    message = f'ALERT: Light source detected by camera {camera_number} at {video_id}'
+    message = f'ALERT: Light source detected by camera {camera_number} at {time[11:19]} on {time[0:10]}'
 
     # Send the message using the WhatsApp Business API
     client = Client(account_sid, auth_token)
@@ -13,7 +13,7 @@ def send_alert(camera_number, image_path, video_id):
     response = client.messages.create(
         from_ = "whatsapp:+14155238886",
         to = 'whatsapp:+917010757200',
-        media_url=[f'{image_path}'],
+        #media_url=[f'{image_path}'],
         body = message)
 
     # Check if the message was sent successfully
