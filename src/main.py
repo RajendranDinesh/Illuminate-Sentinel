@@ -5,7 +5,8 @@ import time
 from multiprocessing import Process
 
 # List of camera IP addresses
-cameras = ["rtsp://username:password@192.168.0.1:554/stream", "rtsp://username:password@192.168.0.2:554/stream"]
+#cameras = ["rtsp://username:password@192.168.0.1:554/stream", "rtsp://username:password@192.168.0.2:554/stream"]
+cameras = ['https://10.10.74.198:8080/videofeed']
 
 def capture_and_alert(i, ip):
     while True:
