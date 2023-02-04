@@ -5,8 +5,10 @@ import time
 from multiprocessing import Process
 
 # List of camera IP addresses
-#cameras = ["rtsp://username:password@192.168.0.1:554/stream", "rtsp://username:password@192.168.0.2:554/stream"]
-cameras = ['https://10.10.74.198:8080/videofeed']
+cameras = [0]
+
+def detect_light_source(i, video_path, time):
+    alert.send_alert(i, video_path, time)
 
 def capture_and_alert(i, ip):
     while True:
@@ -14,8 +16,9 @@ def capture_and_alert(i, ip):
         if video_path:
             # Save video in the database
             video_id = database.save_video(video_path)
-            # Send alert with video and video_id
-            alert.send_alert(i, video_path, time)
+            # Start a new process to continuously detect light sources in the video
+            process = Process(target=detect_light_source, args=(i, video_path, time))
+            process.start()
 
 if __name__ == '__main__':
     processes = []

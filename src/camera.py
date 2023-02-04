@@ -1,7 +1,9 @@
 import cv2
 import datetime
 from detection import detect_light_sources
+import moviepy.editor as mp
 
+    
 
 def capture_video(ip, i):
     # Open a connection to the video file
@@ -17,7 +19,7 @@ def capture_video(ip, i):
         light_sources = detect_light_sources(frame)
 
         if light_sources:
-
+            
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
             date = datetime.datetime.now()
@@ -32,13 +34,13 @@ def capture_video(ip, i):
                 video_writer.write(frame)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
-
+            
             cap.release()
             video_writer.release()
             cv2.destroyAllWindows()
+
             
             return f"E:/ForestProject/data/videos/camera_{i}_{time}.mp4", time
-        
-    # Release the camera and close the window
+   
     cap.release()
     cv2.destroyAllWindows()
